@@ -1,0 +1,16 @@
+services:
+  api:
+    build: .
+    env_file: .env
+    ports:
+      - "${BACKEND_PUBLIC_PORT:-8080}:8080"
+    volumes:
+      - content:/app/data
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "wget", "-q", "--spider", "http://127.0.0.1:8080/healthz"]
+      interval: 15s
+      timeout: 3s
+      retries: 3
+volumes:
+  content:
